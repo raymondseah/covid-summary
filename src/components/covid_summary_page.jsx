@@ -3,6 +3,16 @@ import React, { Component } from "react";
 import { withRouter, Link } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
+import { Pie, Line, Bar } from "react-chartjs-2";
+import * as echarts from "echarts/core";
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+} from "echarts/components";
+import { PieChart } from "echarts/charts";
+import { CanvasRenderer } from "echarts/renderers";
+import '.././components/covid_summary_page.css'
 
 export default class covid_summary_page extends Component {
   constructor(props) {
@@ -18,6 +28,7 @@ export default class covid_summary_page extends Component {
   componentDidMount() {
     this.getCovidCaseSummary();
     this.getSingaporeCovidData();
+    this.getPieChart();
   }
 
   getCovidCaseSummary() {
@@ -39,31 +50,80 @@ export default class covid_summary_page extends Component {
         "https://api.apify.com/v2/key-value-stores/yaPbKe9e5Et61bl7W/records/LATEST?disableRedirect=true"
       )
       .then((response) => {
-        this.setState(
-          {
-            covid_singapore_data: response.data,
-            raw_date: response.data.lastUpdatedAtApify,
-          },
-        );
+        this.setState({
+          covid_singapore_data: response.data,
+          raw_date: response.data.lastUpdatedAtApify,
+        });
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
+  getPieChart() {
+    echarts.use([
+      TitleComponent,
+      TooltipComponent,
+      LegendComponent,
+      PieChart,
+      CanvasRenderer,
+    ]);
+
+    var chartDom = document.getElementById("global_chart");
+    var myChart = echarts.init(chartDom);
+    var option;
+    option = {
+      title: {
+          text: 'Pie Chart',
+          subtext: '纯属虚构',
+          left: 'center'
+      },
+      tooltip: {
+          trigger: 'item'
+      },
+      legend: {
+          orient: 'vertical',
+          left: 'left',
+      },
+      series: [
+          {
+              name: '访问来源',
+              type: 'pie',
+              radius: '50%',
+              data: [
+                  {value: 1048, name: '搜索引擎'},
+                  {value: 735, name: '直接访问'},
+                  {value: 580, name: '邮件营销'},
+                  {value: 484, name: '联盟广告'},
+                  {value: 300, name: '视频广告'}
+              ],
+              emphasis: {
+                  itemStyle: {
+                      shadowBlur: 10,
+                      shadowOffsetX: 0,
+                      shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  }
+              }
+          }
+      ]
+  };
+  
+  option && myChart.setOption(option);
+  
+  }
 
   render() {
     return (
       <div id="covid_summary_page" className="container">
         <h1 className="page_title">Global COVID-19 Cases</h1>
 
-        <div id="sgcases">
+        <div id="sgcases" className="first-page">
+          <h3>COVID-19 case Summary in Singapore</h3>
           <h3>
-            COVID-19 case Summary in Singapore
-          </h3>
-          <h3>
-          Last Updated{" "}on {" "} 
-            {moment(this.state.covid_singapore_data.lastUpdatedAtApify).format("YYYY-MM-DD @ HH:mm")}
+            Last Updated on{" "}
+            {moment(this.state.covid_singapore_data.lastUpdatedAtApify).format(
+              "YYYY-MM-DD @ HH:mm"
+            )}
           </h3>
           <div id="firstrow" className="row">
             <table className="table col">
@@ -175,6 +235,68 @@ export default class covid_summary_page extends Component {
               </tbody>
             </table>
           </div>
+        </div>
+
+        <div id="globalcases" className="second-page">
+          <h3>Global Cases Summary</h3>
+          <h3>
+            Last Updated on{" "}
+            {moment(this.state.covid_global_summary.date).format(
+              "YYYY-MM-DD @ HH:mm"
+            )}
+          </h3>
+
+          <div id="firstrow" className="row">
+            <table className="table col">
+              <thead>
+                <tr>
+                  <th scope="col">World Wide Cases</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">
+                    {this.state.covid_global_summary.TotalConfirmed}
+                  </th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="secondrow" className="row">
+            <table className="table col">
+              <thead>
+                <tr>
+                  <th scope="col">Total Deaths</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">
+                    {this.state.covid_global_summary.TotalDeaths}
+                  </th>
+                </tr>
+              </tbody>
+            </table>
+
+            <table className="table col">
+              <thead>
+                <tr>
+                  <th scope="col">Total Recovered</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">
+                    {this.state.covid_global_summary.NewRecovered}
+                  </th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        
+            <canvas id="global_chart" height="400" width="500"></canvas>
+     
         </div>
       </div>
     );
