@@ -1,13 +1,31 @@
-#sgcases {
-    height:100vh
+
+#sgcase {
+  height: 100vh;
+  background: #F2B705;
 }
 
-#globalcases {
-    height:100vh
+.first-page {
+  padding-top: 10vh;
 }
 
+#globalcase {
+  height: 100vh;
+  background: #0c972a;
+}
+
+.second-page {
+  padding-top: 10vh;
+}
 
 #global_chart {
-    width:300;
-    height:600;
+  width: 300;
+  height: 600;
+}
+
+.nav-item {
+  transition: background 200ms;
+}
+
+.nav-link {
+  outline: none;
 }

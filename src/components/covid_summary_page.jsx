@@ -12,9 +12,9 @@ import {
 } from "echarts/components";
 import { PieChart } from "echarts/charts";
 import { CanvasRenderer } from "echarts/renderers";
-import '.././components/covid_summary_page.css'
+import ".././components/covid_summary_page.css";
 
-export default class covid_summary_page extends Component {
+class covid_summary_page extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,231 +74,232 @@ export default class covid_summary_page extends Component {
     var option;
     option = {
       title: {
-          text: 'Pie Chart',
-          subtext: '纯属虚构',
-          left: 'center'
+        text: "Pie Chart",
+        subtext: "纯属虚构",
+        left: "center",
       },
       tooltip: {
-          trigger: 'item'
+        trigger: "item",
       },
       legend: {
-          orient: 'vertical',
-          left: 'left',
+        orient: "vertical",
+        left: "left",
       },
       series: [
-          {
-              name: '访问来源',
-              type: 'pie',
-              radius: '50%',
-              data: [
-                  {value: 1048, name: '搜索引擎'},
-                  {value: 735, name: '直接访问'},
-                  {value: 580, name: '邮件营销'},
-                  {value: 484, name: '联盟广告'},
-                  {value: 300, name: '视频广告'}
-              ],
-              emphasis: {
-                  itemStyle: {
-                      shadowBlur: 10,
-                      shadowOffsetX: 0,
-                      shadowColor: 'rgba(0, 0, 0, 0.5)'
-                  }
-              }
-          }
-      ]
-  };
-  
-  option && myChart.setOption(option);
-  
+        {
+          name: "访问来源",
+          type: "pie",
+          radius: "50%",
+          data: [
+            { value: 1048, name: "搜索引擎" },
+            { value: 735, name: "直接访问" },
+            { value: 580, name: "邮件营销" },
+            { value: 484, name: "联盟广告" },
+            { value: 300, name: "视频广告" },
+          ],
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: "rgba(0, 0, 0, 0.5)",
+            },
+          },
+        },
+      ],
+    };
+
+    option && myChart.setOption(option);
   }
 
   render() {
     return (
-      <div id="covid_summary_page" className="container">
-        <h1 className="page_title">Global COVID-19 Cases</h1>
+      <div id="covid_summary_page" className="">
+  
+        <section id="sgcase" className="hero-bg">
+          <div className="first-page">
+            <h3>COVID-19 case Summary in Singapore</h3>
+            <h3>
+              Last Updated on{" "}
+              {moment(
+                this.state.covid_singapore_data.lastUpdatedAtApify
+              ).format("YYYY-MM-DD @ HH:mm")}
+            </h3>
+            <div id="firstrow" className="row">
+              <table className="table col">
+                <thead>
+                  <tr>
+                    <th scope="col">Total Cases</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      {this.state.covid_singapore_data.infected}
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-        <div id="sgcases" className="first-page">
-          <h3>COVID-19 case Summary in Singapore</h3>
-          <h3>
-            Last Updated on{" "}
-            {moment(this.state.covid_singapore_data.lastUpdatedAtApify).format(
-              "YYYY-MM-DD @ HH:mm"
-            )}
-          </h3>
-          <div id="firstrow" className="row">
-            <table className="table col">
-              <thead>
-                <tr>
-                  <th scope="col">Total Cases</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">
-                    {this.state.covid_singapore_data.infected}
-                  </th>
-                </tr>
-              </tbody>
-            </table>
+            <div id="secondrow" className="row">
+              <table className="table col">
+                <thead>
+                  <tr>
+                    <th scope="col">Active Cases</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      {this.state.covid_singapore_data.activeCases}
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table className="table col">
+                <thead>
+                  <tr>
+                    <th scope="col">Discharged</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      {this.state.covid_singapore_data.discharged}
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div id="thirdrow" className="row">
+              <table className="table col">
+                <thead>
+                  <tr>
+                    <th scope="col">Hospitalized Stable</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      {this.state.covid_singapore_data.stableHospitalized}
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table className="table col">
+                <thead>
+                  <tr>
+                    <th scope="col">Hospitalized Critical</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      {this.state.covid_singapore_data.criticalHospitalized}
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table className="table col">
+                <thead>
+                  <tr>
+                    <th scope="col">Recovered</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      {this.state.covid_singapore_data.recovered}
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table className="table col">
+                <thead>
+                  <tr>
+                    <th scope="col">Deceased</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      {this.state.covid_singapore_data.deceased}
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+        </section>
+        <section id="globalcase" className="hero-bg">
+          <div className="second-page">
+            <h3>Global Cases Summary</h3>
+            <h3>
+              Last Updated on{" "}
+              {moment(this.state.covid_global_summary.date).format(
+                "YYYY-MM-DD @ HH:mm"
+              )}
+            </h3>
 
-          <div id="secondrow" className="row">
-            <table className="table col">
-              <thead>
-                <tr>
-                  <th scope="col">Active Cases</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">
-                    {this.state.covid_singapore_data.activeCases}
-                  </th>
-                </tr>
-              </tbody>
-            </table>
+            <div id="firstrow" className="row">
+              <table className="table col">
+                <thead>
+                  <tr>
+                    <th scope="col">World Wide Cases</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      {this.state.covid_global_summary.TotalConfirmed}
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="secondrow" className="row">
+              <table className="table col">
+                <thead>
+                  <tr>
+                    <th scope="col">Total Deaths</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      {this.state.covid_global_summary.TotalDeaths}
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
 
-            <table className="table col">
-              <thead>
-                <tr>
-                  <th scope="col">Discharged</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">
-                    {this.state.covid_singapore_data.discharged}
-                  </th>
-                </tr>
-              </tbody>
-            </table>
+              <table className="table col">
+                <thead>
+                  <tr>
+                    <th scope="col">Total Recovered</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      {this.state.covid_global_summary.NewRecovered}
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <canvas id="global_chart" height="300" width="400"></canvas>
           </div>
-
-          <div id="thirdrow" className="row">
-            <table className="table col">
-              <thead>
-                <tr>
-                  <th scope="col">Hospitalized Stable</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">
-                    {this.state.covid_singapore_data.stableHospitalized}
-                  </th>
-                </tr>
-              </tbody>
-            </table>
-
-            <table className="table col">
-              <thead>
-                <tr>
-                  <th scope="col">Hospitalized Critical</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">
-                    {this.state.covid_singapore_data.criticalHospitalized}
-                  </th>
-                </tr>
-              </tbody>
-            </table>
-
-            <table className="table col">
-              <thead>
-                <tr>
-                  <th scope="col">Recovered</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">
-                    {this.state.covid_singapore_data.recovered}
-                  </th>
-                </tr>
-              </tbody>
-            </table>
-
-            <table className="table col">
-              <thead>
-                <tr>
-                  <th scope="col">Deceased</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">
-                    {this.state.covid_singapore_data.deceased}
-                  </th>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div id="globalcases" className="second-page">
-          <h3>Global Cases Summary</h3>
-          <h3>
-            Last Updated on{" "}
-            {moment(this.state.covid_global_summary.date).format(
-              "YYYY-MM-DD @ HH:mm"
-            )}
-          </h3>
-
-          <div id="firstrow" className="row">
-            <table className="table col">
-              <thead>
-                <tr>
-                  <th scope="col">World Wide Cases</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">
-                    {this.state.covid_global_summary.TotalConfirmed}
-                  </th>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div id="secondrow" className="row">
-            <table className="table col">
-              <thead>
-                <tr>
-                  <th scope="col">Total Deaths</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">
-                    {this.state.covid_global_summary.TotalDeaths}
-                  </th>
-                </tr>
-              </tbody>
-            </table>
-
-            <table className="table col">
-              <thead>
-                <tr>
-                  <th scope="col">Total Recovered</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">
-                    {this.state.covid_global_summary.NewRecovered}
-                  </th>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-        
-            <canvas id="global_chart" height="400" width="500"></canvas>
-     
-        </div>
+        </section>
       </div>
     );
   }
 }
+
+export default covid_summary_page;
