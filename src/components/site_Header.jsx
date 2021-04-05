@@ -20,6 +20,9 @@ class site_Header extends Component {
                 <li class="nav-item">
                   <a class="nav-link" href="#globalcase">Global Cases</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#resultsbycountry">Select Country</a>
+                </li>
               </ul>
             </div>
           </div>

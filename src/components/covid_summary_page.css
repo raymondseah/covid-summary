@@ -1,16 +1,18 @@
 
 #sgcase {
   height: 100vh;
-  background: #F2B705;
+  
 }
 
 .first-page {
   padding-top: 10vh;
 }
 
+/* Break */
+
 #globalcase {
   height: 100vh;
-  background: #0c972a;
+background-color: antiquewhite;
 }
 
 .second-page {
@@ -20,6 +22,16 @@
 #global_chart {
   width: 300;
   height: 600;
+}
+
+/* Break */
+
+#resultsbycountry {
+  height:100vh;
+}
+
+.third-page {
+  padding-top: 10vh;
 }
 
 .nav-item {

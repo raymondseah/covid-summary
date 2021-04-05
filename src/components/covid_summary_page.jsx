@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
-import React,{Component} from "react";
+import React, { Component } from "react";
 import { withRouter, Link } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
 import { Pie, Line, Bar } from "react-chartjs-2";
 import * as echarts from "echarts/core";
+import { DataGrid } from "@material-ui/data-grid";
+
 import {
   TitleComponent,
   TooltipComponent,
@@ -22,13 +24,32 @@ class covid_summary_page extends Component {
       covid_singapore_data: "",
       raw_date: "",
       modified_last_updated_date: "",
+      all_country_data: [],
+      modified_all_country_date: [],
+      test: [
+        { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
+        { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
+        { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
+        { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
+        { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
+        { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
+        { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
+        { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
+        { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+      ],
+      columns: [
+        { field: "id", headerName: "ID", width: 100 },
+        { field: "Country", headerName: "Country", width: 200 },
+        { field: "TotalConfirmed", headerName: "Confirmed", width: 200 },
+        { field: "TotalDeaths", headerName: "Deaths", width: 200 },
+        { field: "TotalRecovered", headerName: "Recovered", width: 200 },
+      ],
     };
   }
 
   componentDidMount() {
     this.getCovidCaseSummary();
     this.getSingaporeCovidData();
-    this.getPieChart();
   }
 
   getCovidCaseSummary() {
@@ -37,7 +58,10 @@ class covid_summary_page extends Component {
       .then((response) => {
         this.setState({
           covid_global_summary: response.data.Global,
+          all_country_data: response.data.Countries,
         });
+        this.getPieChart();
+        this.addIdtoArray();
       })
       .catch((err) => {
         console.log(err);
@@ -72,30 +96,38 @@ class covid_summary_page extends Component {
     var chartDom = document.getElementById("global_chart");
     var myChart = echarts.init(chartDom);
     var option;
+
     option = {
       title: {
-        text: "Pie Chart",
-        subtext: "纯属虚构",
+        text: "Global Covid Pie Chart",
+        subtext: "",
         left: "center",
       },
       tooltip: {
         trigger: "item",
       },
-      legend: {
-        orient: "vertical",
-        left: "left",
-      },
+      // legend: {
+      //   orient: "vertical",
+      //   left: "left",
+      // },
       series: [
         {
-          name: "访问来源",
+          name: "",
           type: "pie",
           radius: "50%",
           data: [
-            { value: 1048, name: "搜索引擎" },
-            { value: 735, name: "直接访问" },
-            { value: 580, name: "邮件营销" },
-            { value: 484, name: "联盟广告" },
-            { value: 300, name: "视频广告" },
+            {
+              value: this.state.covid_global_summary.TotalConfirmed,
+              name: "Total Cases",
+            },
+            {
+              value: this.state.covid_global_summary.TotalDeaths,
+              name: "Total Deaths",
+            },
+            {
+              value: this.state.covid_global_summary.TotalRecovered,
+              name: "Total Recovered",
+            },
           ],
           emphasis: {
             itemStyle: {
@@ -111,12 +143,18 @@ class covid_summary_page extends Component {
     option && myChart.setOption(option);
   }
 
+  addIdtoArray() {
+    let data = this.state.all_country_data;
+    data.forEach((o, i) => (o.id = i + 1));
+
+    this.setState({ modified_all_country_date: data });
+    console.log(this.state.modified_all_country_date);
+  }
   render() {
     return (
       <div id="covid_summary_page" className="">
-  
         <section id="sgcase" className="hero-bg">
-          <div className="first-page">
+          <div className="first-page container">
             <h3>COVID-19 case Summary in Singapore</h3>
             <h3>
               Last Updated on{" "}
@@ -237,7 +275,7 @@ class covid_summary_page extends Component {
           </div>
         </section>
         <section id="globalcase" className="hero-bg">
-          <div className="second-page">
+          <div className="second-page container">
             <h3>Global Cases Summary</h3>
             <h3>
               Last Updated on{" "}
@@ -295,6 +333,15 @@ class covid_summary_page extends Component {
             </div>
 
             <canvas id="global_chart" height="300" width="400"></canvas>
+          </div>
+        </section>
+        <section id="resultsbycountry" className="herp-bg">
+          <div className="third-page container">
+            <h1>COVID Summary Table</h1>
+            <div id="all-bookings-by-user-page" style={{ height: 400, width: '100%' }}>
+                <DataGrid rows={this.state.modified_all_country_date} columns={this.state.columns} pageSize={10} checkboxSelection/>
+                
+            </div>
           </div>
         </section>
       </div>
