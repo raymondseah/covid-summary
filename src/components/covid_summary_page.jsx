@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { Component } from "react";
+import React,{Component} from "react";
 import { withRouter, Link } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
